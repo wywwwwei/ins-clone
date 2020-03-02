@@ -2,16 +2,13 @@ package main
 
 import (
 	"Mosad-Server/db"
+	"fmt"
 	"github.com/gin-gonic/gin"
-)
-
-const (
-	port = ":7777"
 )
 
 func main() {
 	router := gin.Default()
 	setRouter(router)
-	db.DbConn()
-	router.Run(port)
+	db.Manager()
+	router.Run(fmt.Sprintf("%s:%d", SERVER_HOST, SERVER_HTTP_PORT))
 }
