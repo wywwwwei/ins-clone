@@ -7,6 +7,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
 	"sync"
+	"time"
 )
 
 type StorageManager struct {
@@ -32,7 +33,7 @@ func dbConn(username, password, server, dbname string, port uint) *gorm.DB {
 		log.Fatal(err)
 	}
 
-	db.LogMode(true)
+	db.LogMode(false)
 
 	return db
 }
@@ -56,10 +57,12 @@ func (m *StorageManager) CreateTable() {
 
 	m.db.CreateTable(&model.Token{}).AddForeignKey("user_id", "profiles(id)", "RESTRICT", "RESTRICT")
 
-	m.db.Create(&model.User{
-		Username: "Hello",
-		Email:    "a@qq.com",
-	})
+	test := model.DTOUser{Email: "a@qq.com", Password: "Hello", Username: "Test", CreatedAt: time.Now().Unix()}
+	if err := m.CreateUser(&test); err != nil {
+		fmt.Println("Test 1: ", err)
+	}
+	fmt.Println("Test 1: ", test)
+
 	m.db.Create(&model.Token{
 		UserID:    1,
 		UserToken: "1",

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"Mosad-Server/db"
 	"Mosad-Server/model"
 	"github.com/dgrijalva/jwt-go"
 )
@@ -18,6 +19,10 @@ func AccessTokenSign(user model.DTOUser) (*model.DTOToken, error) {
 
 	tokenString, err := token.SignedString(SignKey)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := db.Manager().CreateToken(user.ID, tokenString); err != nil {
 		return nil, err
 	}
 

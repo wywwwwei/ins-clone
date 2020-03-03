@@ -10,7 +10,7 @@ type User struct {
 	Password string `gorm:"size:255;not null"`
 
 	AvatarUrl string `gorm:"size:255"`
-	Email     string `gorm:"size:255"`
+	Email     string `gorm:"size:255;unique"`
 	Gender    string `gorm:"type:enum('m','f','s');default:'s'"`
 	CreatedAt time.Time
 
