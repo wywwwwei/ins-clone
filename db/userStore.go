@@ -3,6 +3,7 @@ package db
 import (
 	"Mosad-Server/model"
 	"errors"
+	"github.com/jinzhu/gorm"
 	"time"
 )
 
@@ -22,5 +23,14 @@ func (m *StorageManager) CreateUser(user *model.DTOUser) error {
 	}
 	m.db.Create(&createdUser)
 	user.ID = createdUser.ID
+	return nil
+}
+
+func (m *StorageManager) LoadUser(user *model.DTOUser) error {
+	queryUser := model.User{ID: user.ID}
+	if err := m.db.First(&queryUser).Error; gorm.IsRecordNotFoundError(err) {
+		return errors.New("this user does not exist")
+	}
+	model.UserToDTO(&queryUser, user)
 	return nil
 }

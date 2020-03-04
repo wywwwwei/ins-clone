@@ -21,7 +21,7 @@ func Manager() *StorageManager {
 	once.Do(func() {
 		storageManager = &StorageManager{}
 		storageManager.db = dbConn(DBUsername, DBPassword, DBServer, DBName, DBPort)
-		storageManager.CreateTable()
+		//storageManager.CreateTable()
 	})
 	return storageManager
 }
@@ -33,7 +33,7 @@ func dbConn(username, password, server, dbname string, port uint) *gorm.DB {
 		log.Fatal(err)
 	}
 
-	db.LogMode(false)
+	db.LogMode(true)
 
 	return db
 }

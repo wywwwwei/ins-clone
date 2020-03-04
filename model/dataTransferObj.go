@@ -15,7 +15,7 @@ type DTOPost struct {
 type DTOUser struct {
 	ID       uint   `json:"id"`
 	Username string `json:"username"`
-	Password string `json:"password"`
+	Password string `json:"password,omitempty"`
 
 	AvatarUrl string `json:"avatar_url"`
 	Email     string `json:"email"`

@@ -7,10 +7,14 @@ import (
 )
 
 var (
-	SignKey string = "wyw1191448318@hotmail.com"
+	SignKey = []byte("wyw1191448318@hotmail.com")
 )
 
-func AccessTokenSign(user model.DTOUser) (*model.DTOToken, error) {
+func AccessTokenSign(user *model.DTOUser) (*model.DTOToken, error) {
+	if err := db.Manager().LoadUser(user); err != nil {
+		return nil, err
+	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email":  user.Email,
 		"userID": user.ID,
@@ -28,10 +32,10 @@ func AccessTokenSign(user model.DTOUser) (*model.DTOToken, error) {
 
 	return &model.DTOToken{
 		AccessToken: tokenString,
-		User:        model.DTOUser{},
+		User:        *user,
 	}, nil
 }
 
 func AccessTokenValidate() bool {
-
+	return true
 }
